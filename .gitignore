@@ -1,0 +1,6 @@
+.pyenv/
+.vscode/
+__pycache__/
+
+*.json
+*.log

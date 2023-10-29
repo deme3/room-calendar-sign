@@ -1,0 +1,289 @@
+/* Import the font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+
+body, html {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+  line-height: 1;
+}
+
+main {
+  --var-internal-padding: 32px;
+  --var-external-padding: 16px;
+  width: calc(100vw - calc(var(--var-external-padding) * 2));
+  height: calc(100vh - calc(var(--var-external-padding) * 2));
+  margin: var(--var-external-padding);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+main .room-status {
+  border-radius: 16px;
+  padding: var(--var-internal-padding);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+#connection-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background-color: #d11c1c;
+}
+
+.connected #connection-indicator {
+  background-color: #6ed11c;
+}
+
+main .action-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  height: 72px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+main .action-bar .upcoming {
+  padding: 0 32px;
+  width: 100%;
+  max-width: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+main .action-bar .upcoming .no-events {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+main .action-bar .upcoming .marquee {
+  --gap: 32px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: var(--gap);
+}
+
+main .action-bar .upcoming .marquee > div {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  gap: var(--gap);
+  min-width: 100%;
+  flex-direction: row;
+  align-items: center;
+  animation: marquee var(--velocity) linear infinite;
+}
+
+main .action-bar .upcoming .event {
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 4px;
+}
+
+main .action-bar .upcoming .event .event-duration {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+main .action-bar .upcoming .event:not(:only-child)::before {
+  content: '•';
+  font-size: 48px;
+  vertical-align: middle;
+  opacity: 0.4;
+  margin-right: var(--gap);
+}
+
+main .action-bar button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  padding: 0 32px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+main .action-bar button:hover {
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+main .action-bar button:active {
+  color: rgba(255, 255, 255, 1);
+  background-color: transparent;
+  /* create a physical button pressed effect with shadows and border */
+  box-shadow: inset 2px -5px 6px -2px rgba(39, 105, 36, 0.7);
+  border-top: 3px solid transparent;
+}
+
+main .action-bar button:disabled {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+main .action-bar button:last-child {
+  border-radius: 0 16px 16px 0;
+}
+
+.vfill {
+  flex: 1;
+}
+
+main.occupied .room-status,
+main.occupied .action-bar {
+  /* background-color: #d11c1c; */
+  background: linear-gradient(180deg, #ed3e3e 0%, #d11c1c 100%);
+}
+
+main.occupied .room-status .status::before {
+  content: 'Occupata';
+}
+
+main .room-status .background {
+  position: absolute;
+  top: 0;
+  bottom: -20%;
+  right: 0;
+  width: 33%;
+  opacity: 0.4;
+  mask-image: url("./lock.svg");
+  mask-repeat: no-repeat;
+  mask-size: cover;
+  -webkit-mask-image: url("./lock.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  background: white;
+}
+
+main.available .room-status .background,
+main.just-finished .room-status .background {
+  mask-image: url("./lock-open.svg");
+  -webkit-mask-image: url("./lock-open.svg");
+}
+
+main.occupied .room-status .background {
+  mask-image: url("./lock.svg");
+  -webkit-mask-image: url("./lock.svg");
+}
+
+main.almost-occupied .room-status .background {
+  mask-image: url("./lock-open.svg");
+  -webkit-mask-image: url("./lock-open.svg");
+}
+
+main.available .room-status,
+main.available .action-bar {
+  /* background-color: #6ed11c; */
+  background: linear-gradient(180deg, #6fc925, #2fa215);
+}
+
+main.just-finished .room-status,
+main.just-finished .action-bar {
+  /* blue */
+  background: linear-gradient(180deg, #3e6ed1 0%, #3e3ed1 100%);
+}
+
+main.available .room-status .status::before,
+main.just-finished .room-status .status::before {
+  content: 'Libera';
+}
+
+main.almost-occupied .room-status,
+main.almost-occupied .action-bar {
+  /* background-color: #d1b11c; */
+  background: linear-gradient(180deg, #edc93e 0%, #d1b11c 100%);
+}
+
+main.almost-occupied .room-status .status::before {
+  content: 'Libera';
+}
+
+main.almost-occupied .room-status .activity::before {
+  content: 'a breve';
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  font-size: 24px;
+  font-variant: small-caps;
+}
+
+main.just-finished .room-status .activity::before {
+  content: 'appena conclusa';
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  font-size: 24px;
+  font-variant: small-caps;
+}
+
+.room, .status, .activity, .duration {
+  width: 100%;
+  line-height: 1;
+}
+
+
+.room {
+  font-size: 48px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.status {
+  font-size: 128px;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  margin-top: 16px;
+}
+
+.activity {
+  width: 100%;
+  font-size: 36px;
+  margin-bottom: 0.4em;
+}
+
+.duration {
+  font-size: 24px;
+  width: 100%;
+}

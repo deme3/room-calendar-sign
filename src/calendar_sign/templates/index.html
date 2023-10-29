@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Room Reservation Sign</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="dynamic.js"></script>
+</head>
+
+<body>
+  <main class="{{ status_class }}">
+    <div id="connection-indicator"></div>
+    <section class="room-status">
+      <div class="background"></div>
+      <p class="room">{{ room_name }}</p>
+      <p class="status"></p>
+      <div class="vfill"></div>
+      {% if occupied or almost_occupied %}
+      <p class="activity">{{ latest_event.event_name }}</p>
+      <p class="duration">{{ latest_event.start_time.strftime("%H:%M") }} &mdash; {{
+        latest_event.end_time.strftime("%H:%M") }}</p>
+      {% elif event_just_finished %}
+      <p class="activity">{{ latest_event.event_name }}</p>
+      <p class="duration">Terminata alle {{ latest_event.end_time.strftime("%H:%M") }}</p>
+      {% else %}
+      <p class="activity">Nessuna attività</p>
+      <div class="duration">Aula libera</div>
+      {% endif %}
+    </section>
+    {% if not occupied %}
+    <section class="action-bar">
+      <div class="upcoming">
+        {% if upcoming_events|length > 0 %}
+          <div class="marquee" style="--velocity:{{ (upcoming_events|length)*10 }}s">
+            <div>
+              {% for event in upcoming_events %}
+                <div class="event">
+                  <span class="event-name">{{ event.event_name }}</span>
+                  {% if event.start_time.strftime("%d/%m/%Y") != now.strftime("%d/%m/%Y") %}
+                    <span class="event-duration">{{ event.start_time.strftime("%a %d %b, %H:%M").lower() }} &mdash; {{ event.end_time.strftime("%H:%M") }}</span>
+                  {% else %}
+                    <span class="event-duration">{{ event.start_time.strftime("%H:%M") }} &mdash; {{
+                    event.end_time.strftime("%H:%M") }}</span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            <div>
+              {% for event in upcoming_events %}
+                <div class="event">
+                  <span class="event-name">{{ event.event_name }}</span>
+                  {% if event.start_time.strftime("%d/%m/%Y") != now.strftime("%d/%m/%Y") %}
+                    <span class="event-duration">{{ event.start_time.strftime("%a %d %b, %H:%M").lower() }} &mdash; {{ event.end_time.strftime("%H:%M") }}</span>
+                  {% else %}
+                    <span class="event-duration">{{ event.start_time.strftime("%H:%M") }} &mdash; {{
+                    event.end_time.strftime("%H:%M") }}</span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <div class="no-events">Nessun evento in programmazione.</div>
+        {% endif %}
+      </div>
+      <button style="min-width: fit-content">Impegna sala</button>
+      <button id="refresh-btn"><i class="ti ti-refresh"></i></button>
+    </section>
+    {% endif %}
+  </main>
+</body>
+
+</html>
