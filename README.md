@@ -21,3 +21,19 @@ python -m calendar_sign
 ```
 
 from the `src` directory. The `token.json` file will be created in the same directory as `credentials.json` once you have authorised the application to access your Google Calendar.
+
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/available.png" alt="Available" width="49%">
+  <img src="screenshots/occupied.png" alt="Unavailable" width="49%">
+</p>
+<p align="center">
+  <img src="screenshots/just-finished.png" alt="An activity has recently ended" width="49%">
+  <img src="screenshots/almost-occupied.png" alt="An activity is about to begin" width="49%">
+</p>
+
+- In <b style="color: green">green</b>: Available
+- In <b style="color: red">red</b>: Unavailable
+- In <b style="color: blue">blue</b>: An activity has recently ended
+- In <b style="color: gold">yellow</b>: An activity is about to begin
